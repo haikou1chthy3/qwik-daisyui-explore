@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Qwik City App ⚡️
 
 - [Qwik Docs](https://qwik.builder.io/)
@@ -63,3 +64,6 @@ The production build will generate client and server modules by running both cli
 ```shell
 pnpm build # or `yarn build`
 ```
+=======
+# qwik-daisyui-explore
+>>>>>>> 76712796804e98a146214e18d5a4fd39ec71e4b3
