@@ -5,7 +5,7 @@ import styles from "./header.module.css";
 export default component$(() => {
   return (
     <header class={styles.header}>
-      <div class={["container", styles.wrapper]}>
+      {/* <div class={["container", styles.wrapper]}>
         <div class={styles.logo}>
           <a href="/" title="qwik">
             <QwikLogo height={50} width={143} />
@@ -37,7 +37,7 @@ export default component$(() => {
             </a>
           </li>
         </ul>
-      </div>
+      </div> */}
     </header>
   );
 });
