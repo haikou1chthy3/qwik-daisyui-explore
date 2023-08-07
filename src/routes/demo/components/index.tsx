@@ -364,7 +364,7 @@ export default component$(() => {
                                 </tr>
                             </tbody>
                             {/* <!-- foot --> */}
-                            {/* <tfoot>
+                            <tfoot>
                                 <tr>
                                     <th></th>
                                     <th>Name</th>
@@ -372,7 +372,7 @@ export default component$(() => {
                                     <th>Favorite Color</th>
                                     <th></th>
                                 </tr>
-                            </tfoot> */}
+                            </tfoot>
 
                         </table>
                     </div>
