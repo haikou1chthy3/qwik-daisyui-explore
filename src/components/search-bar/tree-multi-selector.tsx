@@ -7,180 +7,44 @@ import {
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
+import { i18n } from "~/utils/else-util";
 
-export interface SubMenuItem {
-  title: string;
-  checked?: boolean;
-  child?: SubMenuItem[] | null;
-  fn$?: PropFunctionProps<(checked: boolean) => void>;
-}
-export interface MenuProps {
-  menuItem: SubMenuItem;
+
+export interface TreeMultiSelectorProps {
+  searchKey?: string;
+  menuItem?: MenuProps;
 }
 
-export default component$(() => {
-  const store = useStore<MenuProps>({
-    menuItem: {
-      title: "目录1",
-      checked: true,
-      child: [
-        {
-          title: "子目录1",
-          child: [
-            {
-              title: "子文件1",
-              child: null,
-              checked: true,
-            },
-          ],
-          checked: false,
-        },
-        {
-          title: "子文件2",
-          child: null,
-        },
-        {
-          title: "子文件3",
-          child: null,
-        },
-        {
-          title: "子目录2",
-          child: [
-            {
-              title: "子文件4",
-              child: null,
-            },
-            {
-              title: "子目录1",
-              child: [
-                {
-                  title: "子文件1",
-                  child: null,
-                  checked: true,
-                },
-                {
-                  title: "子目录1",
-                  child: [
-                    {
-                      title: "子文件1",
-                      child: null,
-                      checked: true,
-                    },
-                  ],
-                  checked: false,
-                },
-                {
-                  title: "子文件2",
-                  child: null,
-                },
-                {
-                  title: "子文件3",
-                  child: null,
-                },
-                {
-                  title: "子目录2",
-                  child: [
-                    {
-                      title: "子文件4",
-                      child: null,
-                    },
-                    {
-                      title: "子目录1",
-                      child: [
-                        {
-                          title: "子文件1",
-                          child: null,
-                          checked: true,
-                        },
-                      ],
-                      checked: false,
-                    },
-                    {
-                      title: "子文件2",
-                      child: null,
-                    },
-                    {
-                      title: "子文件3",
-                      child: null,
-                    },
-                    {
-                      title: "子目录2",
-                      child: [
-                        {
-                          title: "子文件4",
-                          child: null,
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-              checked: false,
-            },
-            {
-              title: "子文件2",
-              child: null,
-            },
-            {
-              title: "子文件3",
-              child: null,
-            },
-            {
-              title: "子目录2",
-              child: [
-                {
-                  title: "子文件4",
-                  child: null,
-                },
-              ],
-            },
-          ],
-        },
-        {
-          title: "子目录1",
-          child: [
-            {
-              title: "子文件1",
-              child: null,
-              checked: true,
-            },
-          ],
-          checked: false,
-        },
-        {
-          title: "子文件2",
-          child: null,
-        },
-        {
-          title: "子文件3",
-          child: null,
-        },
-        {
-          title: "子目录2",
-          child: [
-            {
-              title: "子文件4",
-              child: null,
-            },
-          ],
-        },
-      ],
+export default component$((props: TreeMultiSelectorProps) => {
+  const lookupList = [
+    {
+      pathname: "/tree-multi-selector/searchkey",
+      nameCN: "搜索...",
+      nameEN: "Search Something...",
     },
-  });
+  ];
+  
   return (
     <>
       <div class="dropdown">
         <input
-          tabindex="0"
+          tabIndex={0}
           class="input join-item select select-bordered w-full max-w-xs"
-          placeholder="Search Input"
+          placeholder={
+            props.searchKey ??
+            i18n({
+              s: "/tree-multi-selector/searchkey",
+              lookupList,
+              locale: "CN",
+            })
+          }
         />
         <div>
           <ul
-            tabindex="0"
+            tabIndex={0}
             class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-full mt-2 menu-xs max-w-xs overflow-auto max-h-96"
           >
-            <Menu menuItem={store.menuItem} />
+            <Menu menuItem={props.menuItem} />
           </ul>
         </div>
       </div>
@@ -188,14 +52,27 @@ export default component$(() => {
   );
 });
 
+export interface MenuItem {
+  title: string;
+  checked?: boolean;
+  child?: MenuProps[] | null;
+  fn$: PropFunctionProps<(checked: boolean) => void>;
+}
+
+export type Menu = MenuItem
+
+export type MenuItemProps = MenuItem
+
+export type MenuProps = MenuItemProps & {
+  menuItem: MenuItem
+}
+
 export const Menu = component$((props: MenuProps) => {
-  const { menuItem } = props;
-  const state = menuItem
-//   useStore<SubMenuItem>(menuItem, { deep: true });
+  const state = useStore<MenuItem>(props.menuItem, { deep: true });
   return (
     <>
       <ul class="menu menu-xs bg-base-200 rounded-lg max-w-xs w-full">
-        <SubMenuItem
+        <MenuItem
           key={`${new Date().toDateString()}-${state.title}`}
           title={state.title}
           checked={state.checked}
@@ -204,7 +81,7 @@ export const Menu = component$((props: MenuProps) => {
             state.checked = checked;
             console.log(state.title, "======>", state.checked);
 
-            if (state && menuItem.child) {
+            if (state && state.child) {
               const queue = [...state.child];
               // 迭代所有字节点
               while (queue.length != 0) {
@@ -222,19 +99,14 @@ export const Menu = component$((props: MenuProps) => {
               }
             }
           }}
-        ></SubMenuItem>
+        ></MenuItem>
       </ul>
     </>
   );
 });
 
-export const SubMenuItem = component$((props: SubMenuItem) => {
+export const MenuItem = component$((props: MenuItemProps) => {
   const checked = useSignal(props.checked);
-  useVisibleTask$(({ track }) => {
-    const value = track(() => {
-      checked.value;
-    });
-  });
   return (
     <>
       <li>
@@ -275,7 +147,7 @@ export const SubMenuItem = component$((props: SubMenuItem) => {
             <ul>
               {props.child?.map((item: any) => (
                 <>
-                  <SubMenuItem
+                  <MenuItem
                     key={`${new Date().toDateString()}-${item.title}`}
                     title={item.title}
                     checked={item.checked}
@@ -307,7 +179,7 @@ export const SubMenuItem = component$((props: SubMenuItem) => {
                         }
                       }
                     }}
-                  ></SubMenuItem>
+                  ></MenuItem>
                 </>
               ))}
             </ul>

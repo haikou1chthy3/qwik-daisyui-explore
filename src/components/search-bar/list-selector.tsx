@@ -1,6 +1,9 @@
 import { component$, useSignal, useStore } from "@builder.io/qwik";
-export default component$(() => {
-
+export type ListSelectorProps = {
+    searchKey?: string
+}
+export default component$((props: ListSelectorProps) => {
+    const { searchKey } = props;
     const store = useStore({
         people: [
             {
@@ -79,7 +82,7 @@ export default component$(() => {
     const selected = useSignal(store.people[3])
     return (<>
         <div class="dropdown">
-            <input tabindex="0" class="input join-item select select-bordered w-full max-w-xs" placeholder="Search Input" />
+            <input tabindex="0" class="input join-item select select-bordered w-full max-w-xs" placeholder={searchKey ?? '搜索...'} />
             <div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-full mt-2">
                     {
