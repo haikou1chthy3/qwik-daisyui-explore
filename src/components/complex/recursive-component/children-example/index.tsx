@@ -1,4 +1,4 @@
-import type { Signal } from "@builder.io/qwik";
+import type { QwikMouseEvent, Signal } from "@builder.io/qwik";
 import {
   component$,
   createContextId,
@@ -178,16 +178,31 @@ export default component$(() => {
 
   traverse(menu);
 
+  const visible = useSignal(true);
   return (
     <>
-      <Menu menu={menu} />
+      <Menu menu={menu} v={visible} />
+      <div class={{ hidden: !visible.value }}>
+        <ul class="z-[3] menu absolute left-[500px] top-[200px] p-2 shadow bg-base-300 rounded-box w-52 origin-top-right divide-y divide-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <li>
+            <a>添加文件</a>
+            <a>添加目录</a>
+          </li>
+          <li>
+            <a>编辑</a>
+          </li>
+          <li>
+            <a>删除</a>
+          </li>
+        </ul>
+      </div>
     </>
   );
 });
 
 export const FileTreeDirectory = createContextId<any>("FileTreeDirectory");
-export const Menu = component$((props: { menu: any }) => {
-  const { menu } = props;
+export const Menu = component$((props: { menu: any; v: any }) => {
+  const { menu, v } = props;
 
   const state = useStore({
     activeIds: [],
@@ -208,7 +223,7 @@ export const Menu = component$((props: { menu: any }) => {
       >
         {menu.map((menuItem: any) => (
           <>
-            <MenuItem menuItem={menuItem} />
+            <MenuItem menuItem={menuItem} v={v} />
           </>
         ))}
       </ul>
@@ -222,8 +237,8 @@ const switchFn = (var1: Signal<boolean>) => {
 
 const clearActive = () => {};
 
-export const MenuItem = component$((props: { menuItem: any }) => {
-  const { menuItem } = props;
+export const MenuItem = component$((props: { menuItem: any; v: any }) => {
+  const { menuItem, v } = props;
   const collaspe = useSignal(false);
   const active = useSignal(false);
   const fileTreeDirectory = useContext(FileTreeDirectory);
@@ -239,7 +254,13 @@ export const MenuItem = component$((props: { menuItem: any }) => {
                 "py-1 my-0.5": true,
                 active: fileTreeDirectory.activeIds.includes(menuItem.id),
               }}
-              onClick$={() => {
+              preventdefault:contextmenu
+              onContextMenu$={() => {
+                switchFn(v);
+              }}
+              onClick$={(
+                event: QwikMouseEvent<HTMLSpanElement, MouseEvent>
+              ) => {
                 switchFn(active);
                 fileTreeDirectory.activeIds = [menuItem.id];
               }}
