@@ -1,6 +1,7 @@
 import {
   component$,
   createContextId,
+  useContext,
   useContextProvider,
   useStore,
   useVisibleTask$,
@@ -10,6 +11,8 @@ import { calcPageRange } from "~/utils/else-util";
 import TreeMultiSelector from "~/components/search-bar/tree-multi-selector";
 import Pageination from "~/components/pageination";
 import Login from "~/components/dialog/login";
+import { PopupExample } from "~/components/popup-manager/popup-manager-example";
+import { PopupManagerContext } from "~/components/popup-manager";
 
 const pageList = [
   {
@@ -542,6 +545,7 @@ const menuItem = {
 
 export const APP_CTX = createContextId<APP_CTX>("APP_CTX");
 export default component$(() => {
+  // const popupManager: any = useContext(PopupManagerContext);
   const store = useStore<APP_CTX>({
     userinfo: {
       username: undefined,
@@ -755,6 +759,20 @@ export default component$(() => {
       <div>
         <Login id={"login_modal"} />
       </div>
+
+      {/* offcial solution, but it doesn't work. */}
+      {/* <button
+        onClick$={async () => {
+          console.log(1);
+
+          await popupManager.show(PopupExample, {
+            salutation: "Hello",
+            name: "World",
+          });
+        }}
+      >
+        Show Modal
+      </button> */}
     </>
   );
 });

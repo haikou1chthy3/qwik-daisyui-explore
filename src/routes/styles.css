@@ -63,7 +63,7 @@ h3 {
 
 a {
     text-decoration: none;
-    color: var(--qwik-light-blue);
+    /* color: var(--qwik-light-blue); */
 }
 
 code {
@@ -219,6 +219,7 @@ button.button-small {
 
 ::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
 }
 
 ::-webkit-scrollbar-track {

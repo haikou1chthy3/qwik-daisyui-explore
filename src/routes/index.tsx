@@ -1,7 +1,7 @@
 import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import ListSelector from "~/components/search-bar/list-selector";
-import SearchInput from "~/components/search-bar/search-input";
+// import SearchInput from "~/components/search-bar/search-input";
 import TreeSelector from "~/components/search-bar/tree-selector";
 
 const pageList = [
@@ -107,7 +107,7 @@ const calcPageRange = (pageDTO: any) => {
   const rangeStr =
     // startStr +
     prevRange.join(",") + "," + nextRange.join(",") + endStr;
-  console.log(rangeStr);
+  // console.log(rangeStr);
 
   const range = rangeStr.split(",");
   return range;
@@ -1115,7 +1115,7 @@ export default component$(() => {
               </div>
 
               <div class="my-5">搜索输入框</div>
-              <SearchInput />
+              {/* <SearchInput /> */}
 
               <div class="my-5">列表选择器</div>
               <ListSelector />

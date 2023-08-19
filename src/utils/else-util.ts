@@ -118,7 +118,7 @@ export const calcPageRange = (pageDTO: any) => {
   const rangeStr =
     // startStr +
     prevRange.join(",") + "," + nextRange.join(",") + endStr;
-  console.log(rangeStr);
+  // console.log(rangeStr);
 
   const range = rangeStr.split(",");
   return range;
@@ -126,4 +126,21 @@ export const calcPageRange = (pageDTO: any) => {
 
 const generateArray = (start: number, end: number) => {
   return Array.from(new Array(end + 1).keys()).slice(start);
+};
+
+export const filterTree = (
+  tree: any = [],
+  validate: any = () => {},
+  param: any = [],
+  arr: any = []
+) => {
+  if (!tree.length) return [];
+  for (const item of tree) {
+    if (!validate.apply(null, [item, ...param])) continue;
+    const node = { ...item, children: [] };
+    arr.push(node);
+    if (item.children && item.children.length)
+      filterTree(item.children, validate, param, node.children);
+  }
+  return arr;
 };

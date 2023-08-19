@@ -9,7 +9,6 @@ import {
 } from "@builder.io/qwik";
 import { i18n } from "~/utils/else-util";
 
-
 export interface TreeMultiSelectorProps {
   searchKey?: string;
   menuItem?: MenuProps;
@@ -23,30 +22,11 @@ export default component$((props: TreeMultiSelectorProps) => {
       nameEN: "Search Something...",
     },
   ];
-  
+
   return (
     <>
-      <div class="dropdown">
-        <input
-          tabIndex={0}
-          class="input join-item select select-bordered w-full max-w-xs"
-          placeholder={
-            props.searchKey ??
-            i18n({
-              s: "/tree-multi-selector/searchkey",
-              lookupList,
-              locale: "CN",
-            })
-          }
-        />
-        <div>
-          <ul
-            tabIndex={0}
-            class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-full mt-2 menu-xs max-w-xs overflow-auto max-h-96"
-          >
-            <Menu menuItem={props.menuItem} />
-          </ul>
-        </div>
+      <div>
+        <Menu menuItem={props.menuItem} />
       </div>
     </>
   );
@@ -56,19 +36,20 @@ export interface MenuItem {
   title: string;
   checked?: boolean;
   child?: MenuProps[] | null;
-  fn$: PropFunctionProps<(checked: boolean) => void>;
+  fn$?: PropFunctionProps<(checked: boolean) => void>;
 }
 
-export type Menu = MenuItem
+export type Menu = MenuItem;
 
-export type MenuItemProps = MenuItem
+export type MenuItemProps = MenuItem;
 
 export type MenuProps = MenuItemProps & {
-  menuItem: MenuItem
-}
+  menuItem: MenuItem;
+};
 
 export const Menu = component$((props: MenuProps) => {
-  const state = useStore<MenuItem>(props.menuItem, { deep: true });
+//   const state = useStore<MenuItem>(props.menuItem, { deep: true });
+    const state = props.menuItem
   return (
     <>
       <ul class="menu menu-xs bg-base-200 rounded-lg max-w-xs w-full">

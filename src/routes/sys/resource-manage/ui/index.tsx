@@ -5,12 +5,11 @@ import {
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import {
-  useLocation,
-} from "@builder.io/qwik-city";
+import { useLocation } from "@builder.io/qwik-city";
 import ListSelector from "~/components/search-bar/list-selector";
 import TreeSelector from "~/components/search-bar/tree-selector";
 import TreeMultiSelector from "~/components/search-bar/tree-multi-selector";
+import ChildrenExample from "~/components/complex/recursive-component/children-example";
 
 // End point
 // export const onRequest: RequestHandler = ({ headers, query, json }) => {
@@ -167,14 +166,8 @@ interface APP_CTX {
 }
 
 export const APP_CTX = createContextId<APP_CTX>("APP_CTX");
+
 export default component$(() => {
-  //   const { menu } = useContent();
-  //   console.log(menu);
-
-  const loc = useLocation();
-  console.log(loc);
-  console.log(loc.url);
-
   const menuItem = {
     title: "目录1",
     checked: true,
@@ -320,7 +313,7 @@ export default component$(() => {
         ],
       },
     ],
-  }
+  };
   const store = useStore<APP_CTX>({
     userinfo: {
       username: undefined,
@@ -373,6 +366,18 @@ export default component$(() => {
               : []
           }
         >
+          <div class="my-5">
+            <h2>三、Children组件</h2>
+          </div>
+
+          <div class="my-5">TSX递归实现</div>
+          <div class="w-64">
+            <ChildrenExample />
+          </div>
+
+          <div class="my-5">Slot实现</div>
+          {/* <ChildrenExample /> */}
+
           {/* list page components */}
           <div class="my-5">
             <h2>一、表格组件</h2>
@@ -381,7 +386,7 @@ export default component$(() => {
           {/* search bar */}
           <div class="my-5 flex">
             <div class="mr-1">
-              <TreeMultiSelector searchKey="Lookup类型" menuItem={menuItem}/>
+              <TreeMultiSelector searchKey="Lookup类型" menuItem={menuItem} />
             </div>
             <div class="mr-1">
               <ListSelector />

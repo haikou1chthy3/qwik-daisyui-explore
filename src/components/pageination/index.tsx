@@ -41,7 +41,7 @@ export default component$((props: PagegeinationProps) => {
           return (
             <>
               <button
-                key={`${item} ${new Date()}`}
+                key={`${item} ${new Date().getTime()} - ${index}`}
                 class={{
                   btn: true,
                   "btn-ghost": true,

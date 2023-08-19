@@ -130,7 +130,7 @@ const calcPageRange = (pageDTO: any) => {
   const rangeStr =
     // startStr +
     prevRange.join(",") + "," + nextRange.join(",") + endStr;
-  console.log(rangeStr);
+  // console.log(rangeStr);
 
   const range = rangeStr.split(",");
   return range;
@@ -179,9 +179,6 @@ export default component$(() => {
   //   console.log(menu);
 
   const loc = useLocation();
-  console.log(loc);
-  console.log(loc.url);
-
   const store = useStore<APP_CTX>({
     userinfo: {
       username: undefined,

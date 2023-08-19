@@ -196,7 +196,7 @@ export const Menu = component$((props: MenuProps) => {
     <>
       <ul class="menu menu-xs bg-base-200 rounded-lg max-w-xs w-full">
         <SubMenuItem
-          key={`${new Date().toDateString()}-${state.title}`}
+          key={`${new Date().getTime()}-${state.title}`}
           title={state.title}
           checked={state.checked}
           child={state.child}
@@ -276,7 +276,7 @@ export const SubMenuItem = component$((props: SubMenuItem) => {
               {props.child?.map((item: any) => (
                 <>
                   <SubMenuItem
-                    key={`${new Date().toDateString()}-${item.title}`}
+                    key={`${new Date().getTime()}-${item.title}`}
                     title={item.title}
                     checked={item.checked}
                     child={item.child}
